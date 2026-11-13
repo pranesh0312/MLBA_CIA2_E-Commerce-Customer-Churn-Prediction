@@ -9,7 +9,13 @@ from matplotlib.patches import Wedge
 st.set_page_config(page_title="Churn Radar | E-Commerce", page_icon="🛒", layout="wide")
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-IMG = lambda name: os.path.join(BASE, "images", name)
+def IMG(name):
+    """Find an image in the images/ folder or directly next to app.py."""
+    for folder in ["images", ""]:
+        path = os.path.join(BASE, folder, name)
+        if os.path.exists(path):
+            return path
+    return None
 
 # ---------- Colour palette ----------
 PURPLE, BLUE, GREEN, RED, ORANGE, GREY = "#6A11CB", "#2575FC", "#11998E", "#FF5E62", "#FF9966", "#9AA5B1"
@@ -58,6 +64,8 @@ df = load_data()
 def show_img(name, sidebar=False):
     """Show a full-width image (works on old and new Streamlit versions)."""
     target = st.sidebar if sidebar else st
+    if IMG(name) is None:      # image missing: skip it instead of crashing
+        return
     try:
         target.image(IMG(name), width="stretch")
     except Exception:
