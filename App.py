@@ -70,8 +70,43 @@ st.markdown(f"""
 /* ---------- Sidebar ---------- */
 [data-testid="stSidebar"] {{ background: linear-gradient(180deg, #121836 0%, #1B1446 100%);
                              border-right: 1px solid #2A3355; }}
-[data-testid="stSidebar"] * {{ color: #FFFFFF !important; font-family: 'Manrope', sans-serif; }}
-.brand {{ font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 0 0; }}
+[data-testid="stSidebar"] * {{ color: #FFFFFF !important; }}
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] label, [data-testid="stSidebar"] div[data-testid="stMetricValue"],
+[data-testid="stSidebar"] .brand, [data-testid="stSidebar"] .tagline {{ font-family: 'Manrope', sans-serif; }}
+/* keep Streamlit's icon font so icon names never show up as plain text */
+[data-testid="stIconMaterial"], .material-symbols-rounded, [class*="material-symbols"] {{
+    font-family: "Material Symbols Rounded", "Material Icons" !important; }}
+
+/* ---------- Sidebar open/close button: fullscreen-style symbol ---------- */
+[data-testid="stSidebarCollapseButton"] button, [data-testid="stExpandSidebarButton"],
+[data-testid="stSidebarCollapsedControl"] button {{
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5'/></svg>") center/20px no-repeat,
+                rgba(124,58,237,.55) !important;
+    border-radius: 10px !important; width: 38px; height: 38px; transition: transform .2s ease, background-color .2s ease;
+}}
+[data-testid="stSidebarCollapseButton"] button:hover, [data-testid="stExpandSidebarButton"]:hover,
+[data-testid="stSidebarCollapsedControl"] button:hover {{ transform: scale(1.1); }}
+[data-testid="stSidebarCollapseButton"] button > *, [data-testid="stExpandSidebarButton"] > *,
+[data-testid="stSidebarCollapsedControl"] button > * {{ display: none !important; }}
+
+/* ---------- Animated radar logo ---------- */
+.radar {{ position: relative; width: 104px; height: 104px; margin: 8px auto 6px auto; border-radius: 50%;
+          border: 1px solid rgba(34,211,238,.6); overflow: hidden;
+          background: repeating-radial-gradient(circle, transparent 0 15px, rgba(34,211,238,.35) 15px 16px),
+                      radial-gradient(circle, rgba(34,211,238,.18), rgba(11,16,32,.9) 70%);
+          box-shadow: 0 0 26px rgba(34,211,238,.35), inset 0 0 18px rgba(124,58,237,.4); }}
+.radar::before {{ content: ""; position: absolute; inset: 0; border-radius: 50%;
+          background: conic-gradient(from 0deg, transparent 0deg 285deg, rgba(34,211,238,.75) 359deg, transparent 360deg);
+          animation: spin 3.5s linear infinite; }}
+.radar .core {{ position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+                font-size: 22px; z-index: 2; }}
+.radar .blip {{ position: absolute; width: 8px; height: 8px; border-radius: 50%; z-index: 2; }}
+.radar .b1 {{ top: 22%; left: 62%; background: #34D399; box-shadow: 0 0 8px #34D399; }}
+.radar .b2 {{ top: 66%; left: 24%; background: #34D399; box-shadow: 0 0 8px #34D399; }}
+.radar .b3 {{ top: 30%; left: 26%; background: #FB7185; box-shadow: 0 0 10px #FB7185; animation: blink 1.4s ease-in-out infinite; }}
+@keyframes spin {{ to {{ transform: rotate(360deg); }} }}
+@keyframes blink {{ 0%,100% {{ opacity: .25; transform: scale(.8); }} 50% {{ opacity: 1; transform: scale(1.5); }} }}
+.brand {{ font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 0 0; text-align: center; }}
 .brand span {{ background: linear-gradient(90deg, {L_CYAN}, {L_VIOLET}); -webkit-background-clip: text;
                background-clip: text; -webkit-text-fill-color: transparent; }}
 .tagline {{ color: {MUTED} !important; font-size: .85rem; margin-bottom: 8px; }}
@@ -248,7 +283,8 @@ def style_ax(ax):
 
 
 # ---------- Sidebar ----------
-show_img("logo.png", sidebar=True)
+st.sidebar.markdown('<div class="radar"><span class="blip b1"></span><span class="blip b2"></span>'
+                    '<span class="blip b3"></span><div class="core">🛒</div></div>', unsafe_allow_html=True)
 st.sidebar.markdown(f'<div class="brand">🛒 <span>{APP_NAME}</span></div>'
                     f'<div class="tagline">{APP_TAGLINE}</div>', unsafe_allow_html=True)
 page = st.sidebar.radio("Navigate", ["🏠 Business Problem", "📊 Data Insights", "🔮 Prediction"])
