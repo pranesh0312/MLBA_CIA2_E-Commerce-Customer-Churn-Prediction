@@ -152,9 +152,8 @@ The trained machine learning model is saved using Joblib as `model.pkl` and can 
 - Monitor model performance using new customer data.
 
 ## 14. Project Links
-- **GitHub Repository:** Add your repository URL.
-- **Jupyter Notebook:** Add your notebook URL.
-- **Live Application:** Add your Streamlit deployment URL after deployment.
+- **GitHub Repository:** https://github.com/pranesh0312/MLBA_CIA2_E-Commerce-Customer-Churn-Prediction.git 
+- **Live Application:** https://mlbacia2e-commerce-customer-churn-prediction-v9nmadbqmf3pb8qkz.streamlit.app/ 
 
 ---
 
